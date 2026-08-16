@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 // Base URL adapts to VITE_API_URL in production or defaults to relative /api for proxy / same-domain routing
 const apiBase = import.meta.env.VITE_API_URL 
   ? (import.meta.env.VITE_API_URL.endsWith('/api') ? import.meta.env.VITE_API_URL : `${import.meta.env.VITE_API_URL}/api`)
