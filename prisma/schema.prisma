@@ -1,0 +1,88 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Property {
+  id          Int       @id @default(autoincrement())
+  title       String
+  slug        String    @unique
+  type        String
+  status      String    @default("Available")
+  price       Float
+  priceLabel  String
+  size        Float
+  sizeUnit    String    @default("Marla")
+  society     String
+  phase       String?
+  location    String
+  description String
+  features    String    @default("[]")
+  images      String    @default("[]")
+  isFeatured  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  inquiries   Inquiry[]
+}
+
+model Agent {
+  id        Int      @id @default(autoincrement())
+  name      String
+  role      String
+  phone     String
+  whatsapp  String
+  image     String?
+  bio       String?
+  createdAt DateTime @default(now())
+}
+
+model News {
+  id          Int      @id @default(autoincrement())
+  title       String
+  subtitle    String?
+  category    String   @default("Market Update")
+  youtubeUrl  String?
+  image       String?
+  description String
+  readTime    String?  @default("5 min watch")
+  isLive      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Testimonial {
+  id         Int      @id @default(autoincrement())
+  name       String
+  role       String
+  location   String?
+  image      String?
+  quote      String
+  rating     Int      @default(5)
+  isFeatured Boolean  @default(true)
+  createdAt  DateTime @default(now())
+}
+
+model Inquiry {
+  id         Int       @id @default(autoincrement())
+  name       String
+  email      String
+  phone      String
+  message    String
+  type       String    @default("general")
+  propertyId Int?
+  property   Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  createdAt  DateTime  @default(now())
+  isRead     Boolean   @default(false)
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  role     String @default("admin")
+}
