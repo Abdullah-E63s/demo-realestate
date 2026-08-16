@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2BC6A" />
+      <stop offset="50%" stop-color="#C9A84C" />
+      <stop offset="100%" stop-color="#9A7B2C" />
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#181818" />
+      <stop offset="100%" stop-color="#0A0A0A" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Badge -->
+  <rect width="64" height="64" rx="14" fill="url(#bgGrad)" stroke="#C9A84C" stroke-width="2" stroke-opacity="0.3" />
+  
+  <!-- Architectural Geometric Monogram: PK -->
+  <g transform="translate(11, 13)">
+    <!-- Roofline accent -->
+    <path d="M 0 10 L 21 0 L 42 10" fill="none" stroke="url(#gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    
+    <!-- Letter P -->
+    <path d="M 6 12 L 6 36 M 6 12 L 18 12 C 22 12 24 15 24 19 C 24 23 22 26 18 26 L 6 26" fill="none" stroke="url(#gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    
+    <!-- Letter K -->
+    <path d="M 28 12 L 28 36 M 38 13 L 29 24 M 31 22 L 40 36" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>

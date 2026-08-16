@@ -12,18 +12,18 @@ model Property {
   id          Int       @id @default(autoincrement())
   title       String
   slug        String    @unique
-  type        String
-  status      String    @default("Available")
+  type        String    // Residential Plot, Commercial Plot, File, House, Villa, Apartment, Farm House
+  status      String    @default("Available") // Available, Sold, Reserved
   price       Float
-  priceLabel  String
+  priceLabel  String    // Human readable: "PKR 1.85 Crore"
   size        Float
-  sizeUnit    String    @default("Marla")
-  society     String
-  phase       String?
-  location    String
+  sizeUnit    String    @default("Marla") // Marla or Kanal
+  society     String    // DHA Lahore, Bahria Town Lahore, Gulberg, etc.
+  phase       String?   // Phase 6, Phase 8, etc.
+  location    String    // Full location string
   description String
-  features    String    @default("[]")
-  images      String    @default("[]")
+  features    String    @default("[]") // JSON-encoded array of strings
+  images      String    @default("[]") // JSON-encoded array of image URLs
   isFeatured  Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -73,7 +73,7 @@ model Inquiry {
   email      String
   phone      String
   message    String
-  type       String    @default("general")
+  type       String    @default("general") // general, site-visit, whatsapp
   propertyId Int?
   property   Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
   createdAt  DateTime  @default(now())
@@ -83,6 +83,6 @@ model Inquiry {
 model User {
   id       Int    @id @default(autoincrement())
   email    String @unique
-  password String
+  password String // bcrypt hashed
   role     String @default("admin")
 }
