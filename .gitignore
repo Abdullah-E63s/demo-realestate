@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build artifacts
+dist/
+client/dist/
+build/
+.vercel/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+server/.env
+
+# Database (keep seed and schema, ignore local sqlite runtime files)
+*.db
+*.db-journal
+server/dev.db
+server/dev.db-journal
+
+# Uploads directory contents (runtime uploads)
+server/uploads/*
+!server/uploads/.gitkeep
+
+# Logs & temporary files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.DS_Store
+Thumbs.db
