@@ -6,6 +6,9 @@
     "postinstall": "npm --prefix client install",
     "build": "npm --prefix client run build",
     "vercel-build": "npm --prefix client run build",
+    "db:sync": "node scripts/sync-db.js",
+    "db:push": "prisma db push --schema=server/prisma/schema.prisma",
+    "db:seed": "node server/prisma/seed.js",
     "server:dev": "cd server && npm run dev",
     "client:dev": "cd client && npm run dev"
   },
