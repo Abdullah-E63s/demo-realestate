@@ -18,6 +18,9 @@ import Contact from './pages/Contact'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminProperties from './pages/admin/AdminProperties'
+import AdminTeam from './pages/admin/AdminTeam'
+import AdminNews from './pages/admin/AdminNews'
+import AdminTestimonials from './pages/admin/AdminTestimonials'
 import AdminInquiries from './pages/admin/AdminInquiries'
 
 import { Navigate } from 'react-router-dom'
@@ -64,6 +67,9 @@ export default function App() {
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/properties" element={<ProtectedRoute><AdminProperties /></ProtectedRoute>} />
+          <Route path="/admin/team" element={<ProtectedRoute><AdminTeam /></ProtectedRoute>} />
+          <Route path="/admin/news" element={<ProtectedRoute><AdminNews /></ProtectedRoute>} />
+          <Route path="/admin/testimonials" element={<ProtectedRoute><AdminTestimonials /></ProtectedRoute>} />
           <Route path="/admin/inquiries" element={<ProtectedRoute><AdminInquiries /></ProtectedRoute>} />
         </Routes>
       </AnimatePresence>

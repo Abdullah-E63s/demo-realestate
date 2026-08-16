@@ -262,6 +262,69 @@ const agents = [
   },
 ];
 
+const news = [
+  {
+    title: 'DHA Phase 9 Prism: Why Now?',
+    subtitle: 'Latest Market Analysis & File Projections',
+    category: 'Market Update',
+    youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80',
+    description: 'Our latest market analysis breaks down why DHA Phase 9 Prism files are outperforming all other sectors. Watch our comprehensive 15-minute breakdown before making your next investment decision.',
+    readTime: '15 min watch',
+    isLive: true,
+  },
+  {
+    title: 'Gulberg Commercial High-Rise Boom in 2026',
+    subtitle: 'Rental Yields & Commercial Floor Valuations',
+    category: 'Commercial Analysis',
+    youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    image: 'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=1200&q=80',
+    description: 'A deep dive into Gulberg commercial corridor returns, corporate leasing trends, and landmark vertical developments reshaping Lahore.',
+    readTime: '10 min watch',
+    isLive: false,
+  },
+  {
+    title: 'Bahria Town Lahore Sector F Development Update',
+    subtitle: 'Possession Timelines & Ready-to-Build Plots',
+    category: 'Development Update',
+    youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=80',
+    description: 'On-ground survey of Bahria Town Sector F development progress, infrastructural upgrades, and fast-track possession zones.',
+    readTime: '8 min watch',
+    isLive: false,
+  },
+];
+
+const testimonials = [
+  {
+    name: 'Usman Iqbal',
+    role: 'Business Owner',
+    location: 'Lahore',
+    image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&q=80',
+    quote: "PKEstate found us our dream plot in DHA Phase 6 within two weeks. The team's knowledge of the area is unmatched.",
+    rating: 5,
+    isFeatured: true,
+  },
+  {
+    name: 'Fariha Tariq',
+    role: 'Overseas Investor',
+    location: 'Dubai',
+    image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&q=80',
+    quote: "Invested in two files through PKEstate. Both appreciated significantly within 18 months. Genuine, transparent advice.",
+    rating: 5,
+    isFeatured: true,
+  },
+  {
+    name: 'Bilal Ahmed',
+    role: 'Tech Entrepreneur',
+    location: 'Karachi',
+    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&q=80',
+    quote: "The most professional real estate team I've dealt with in Pakistan. Sold my commercial plot above asking price.",
+    rating: 5,
+    isFeatured: true,
+  },
+];
+
 async function main() {
   console.log('🌱 Seeding PKEstate database...\n');
 
@@ -292,6 +355,16 @@ async function main() {
   await prisma.agent.deleteMany();
   await prisma.agent.createMany({ data: agents });
   console.log(`✅ ${agents.length} agents seeded`);
+
+  // Seed news (clear and re-seed)
+  await prisma.news.deleteMany();
+  await prisma.news.createMany({ data: news });
+  console.log(`✅ ${news.length} news items seeded`);
+
+  // Seed testimonials (clear and re-seed)
+  await prisma.testimonial.deleteMany();
+  await prisma.testimonial.createMany({ data: testimonials });
+  console.log(`✅ ${testimonials.length} testimonials seeded`);
 
   console.log('\n🎉 Database seeded successfully!');
   console.log('   Run: cd server && npm run dev');

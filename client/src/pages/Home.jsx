@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, ChevronLeft, ChevronRight, Play } from 'lucide-react'
 import { useFeaturedProperties } from '../hooks/useProperties'
+import { useNews } from '../hooks/useNews'
+import { useTestimonials } from '../hooks/useTestimonials'
 import PropertyCard from '../components/property/PropertyCard'
 import StatCounter from '../components/ui/StatCounter'
 import Button from '../components/ui/Button'
@@ -23,7 +25,7 @@ const MARQUEE_ITEMS = [
   'Phase 8', '•', 'Johar Town', '•', 'Barki Road', '•', 'Canal Road', '•',
 ]
 
-const TESTIMONIALS = [
+const FALLBACK_TESTIMONIALS = [
   {
     quote: "PKEstate found us our dream plot in DHA Phase 6 within two weeks. The team's knowledge of the area is unmatched.",
     name: 'Usman Iqbal',
@@ -51,7 +53,14 @@ export default function Home() {
   const imgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
 
   const { data: featuredData, isLoading } = useFeaturedProperties()
+  const { data: newsData } = useNews({ limit: 1 })
+  const { data: testimonialsData } = useTestimonials()
+
   const featured = featuredData?.data || []
+  const latestNews = newsData?.data?.[0] || null
+  const testimonials = (testimonialsData?.data && testimonialsData.data.length > 0)
+    ? testimonialsData.data
+    : FALLBACK_TESTIMONIALS
 
   const scrollCarousel = (dir) => {
     if (carouselRef.current) {
@@ -316,43 +325,51 @@ export default function Home() {
             {/* Video embed area */}
             <div className="relative aspect-video bg-bg-raised overflow-hidden group">
               <img
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=80"
-                alt="Market Update"
+                src={latestNews?.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=80'}
+                alt={latestNews?.title || 'Market Update'}
                 className="w-full h-full object-cover img-grade group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-bg/50 flex items-center justify-center">
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  className="w-16 h-16 rounded-full bg-accent flex items-center justify-center cursor-none"
+                <a
+                  href={latestNews?.youtubeUrl || 'https://youtube.com/@pkestate'}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <Play size={20} className="text-bg ml-1" />
-                </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    className="w-16 h-16 rounded-full bg-accent flex items-center justify-center cursor-none shadow-lg"
+                  >
+                    <Play size={20} className="text-bg ml-1" />
+                  </motion.div>
+                </a>
               </div>
               <div className="absolute bottom-4 left-4">
-                <span className="tag bg-red-600 text-white border-0">LIVE</span>
+                <span className="tag bg-red-600 text-white border-0">
+                  {latestNews?.isLive ? 'LIVE' : (latestNews?.category || 'MARKET UPDATE')}
+                </span>
               </div>
             </div>
 
             {/* Text */}
             <div className="p-8 md:p-12 flex flex-col justify-center">
-              <p className="overline mb-4">Latest Update</p>
+              <p className="overline mb-4">{latestNews?.category || 'Latest Market Update'}</p>
               <h2 className="font-display font-bold text-display-sm text-text-primary mb-4">
-                DHA Phase 9 Prism:<br />
-                <span className="font-serif italic font-normal text-accent">Why Now?</span>
+                {latestNews?.title || 'DHA Phase 9 Prism: Why Now?'}
               </h2>
+              {latestNews?.subtitle && (
+                <p className="font-serif italic text-accent text-sm mb-3">{latestNews.subtitle}</p>
+              )}
               <p className="text-text-secondary text-sm leading-relaxed mb-6">
-                Our latest market analysis breaks down why DHA Phase 9 Prism files are 
-                outperforming all other sectors. Watch our 15-minute breakdown before 
-                making your next investment decision.
+                {latestNews?.description || 'Our latest market analysis breaks down why DHA Phase 9 Prism files are outperforming all other sectors.'}
               </p>
-              <p className="text-xs text-text-muted mb-6">August 2026 · 15 min watch</p>
+              <p className="text-xs text-text-muted mb-6">{latestNews?.readTime || '15 min watch'}</p>
               <a
-                href="https://youtube.com/@pkestate"
+                href={latestNews?.youtubeUrl || 'https://youtube.com/@pkestate'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-accent text-sm font-medium hover:gap-3 transition-all"
               >
-                Watch on YouTube <ArrowRight size={14} />
+                Watch Analysis on YouTube <ArrowRight size={14} />
               </a>
             </div>
           </div>
@@ -369,31 +386,33 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {TESTIMONIALS.map((t, i) => (
+          {testimonials.slice(0, 3).map((t, i) => (
             <motion.div
-              key={i}
+              key={t.id || i}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.5, delay: i * 0.12 }}
-              className={`bg-bg-secondary border border-border p-8 relative ${
+              className={`bg-bg-secondary border border-border p-8 relative flex flex-col justify-between ${
                 i === 1 ? 'md:mt-8' : ''
               }`}
             >
               {/* Quote mark */}
-              <span className="font-serif text-6xl text-accent/20 leading-none absolute top-4 left-6">"</span>
-              <p className="text-text-secondary leading-relaxed mb-6 relative z-10 pt-4 font-light italic">
-                {t.quote}
-              </p>
+              <div>
+                <span className="font-serif text-6xl text-accent/20 leading-none absolute top-4 left-6">"</span>
+                <p className="text-text-secondary leading-relaxed mb-6 relative z-10 pt-4 font-light italic">
+                  {t.quote}
+                </p>
+              </div>
               <div className="flex items-center gap-3 pt-4 border-t border-border">
                 <img
-                  src={t.image}
+                  src={t.image || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=120&q=80'}
                   alt={t.name}
                   className="w-10 h-10 rounded-full object-cover img-grade"
                 />
                 <div>
                   <p className="font-display font-semibold text-sm text-text-primary">{t.name}</p>
-                  <p className="text-xs text-text-muted">{t.role}</p>
+                  <p className="text-xs text-text-muted">{t.role}{t.location ? `, ${t.location}` : ''}</p>
                 </div>
               </div>
             </motion.div>

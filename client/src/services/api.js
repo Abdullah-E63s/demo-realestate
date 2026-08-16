@@ -44,10 +44,30 @@ export const propertyApi = {
   delete: (id) => api.delete(`/properties/${id}`),
 }
 
-// ─── Agent API ────────────────────────────────────────────────────────────
+// ─── Agent / Team API ─────────────────────────────────────────────────────
 export const agentApi = {
   getAll: () => api.get('/agents'),
   getById: (id) => api.get(`/agents/${id}`),
+  create: (data) => api.post('/agents', data),
+  update: (id, data) => api.put(`/agents/${id}`, data),
+  delete: (id) => api.delete(`/agents/${id}`),
+}
+
+// ─── Latest News & Market Updates API ─────────────────────────────────────
+export const newsApi = {
+  getAll: (params) => api.get('/news', { params }),
+  getById: (id) => api.get(`/news/${id}`),
+  create: (data) => api.post('/news', data),
+  update: (id, data) => api.put(`/news/${id}`, data),
+  delete: (id) => api.delete(`/news/${id}`),
+}
+
+// ─── Client Testimonials / Feedback API ───────────────────────────────────
+export const testimonialApi = {
+  getAll: (params) => api.get('/testimonials', { params }),
+  create: (data) => api.post('/testimonials', data),
+  update: (id, data) => api.put(`/testimonials/${id}`, data),
+  delete: (id) => api.delete(`/testimonials/${id}`),
 }
 
 // ─── Inquiry API ──────────────────────────────────────────────────────────

@@ -6,6 +6,8 @@ const fs = require('fs');
 
 const propertyRoutes = require('./src/routes/propertyRoutes');
 const agentRoutes = require('./src/routes/agentRoutes');
+const newsRoutes = require('./src/routes/newsRoutes');
+const testimonialRoutes = require('./src/routes/testimonialRoutes');
 const inquiryRoutes = require('./src/routes/inquiryRoutes');
 const authRoutes = require('./src/routes/authRoutes');
 const { errorHandler } = require('./src/middleware/errorHandler');
@@ -53,6 +55,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // ─── API Routes ──────────────────────────────────────────────────────────────
 app.use('/api/properties', propertyRoutes);
 app.use('/api/agents', agentRoutes);
+app.use('/api/news', newsRoutes);
+app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/inquiries', inquiryRoutes);
 app.use('/api/auth', authRoutes);
 
