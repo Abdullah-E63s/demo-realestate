@@ -53,11 +53,13 @@ export default function Home() {
   const imgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
 
   const { data: featuredData, isLoading } = useFeaturedProperties()
-  const { data: newsData } = useNews({ limit: 1 })
+  const { data: newsData } = useNews()
   const { data: testimonialsData } = useTestimonials()
 
   const featured = featuredData?.data || []
-  const latestNews = newsData?.data?.[0] || null
+  const allNews = newsData?.data || []
+  const latestNews = allNews.find(n => n.isLive) || allNews[0] || null
+  const secondaryNews = allNews.filter(n => n.id !== latestNews?.id).slice(0, 2)
   const testimonials = (testimonialsData?.data && testimonialsData.data.length > 0)
     ? testimonialsData.data
     : FALLBACK_TESTIMONIALS
@@ -318,12 +320,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── MARKET UPDATE VIDEO ───────────────────────────── */}
+      {/* ─── MARKET UPDATE & NEWS SECTION ────────────────── */}
       <section className="section-pad px-6 md:px-12 lg:px-20 max-w-[1600px] mx-auto">
-        <div className="border border-border bg-bg-secondary">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
+          <div>
+            <p className="overline mb-3">Market Intelligence</p>
+            <h2 className="font-display font-bold text-display-md text-text-primary">
+              Latest News &{' '}
+              <span className="font-serif italic font-normal text-accent">Market Analysis.</span>
+            </h2>
+          </div>
+          <Link
+            to="/news"
+            className="inline-flex items-center gap-2 text-accent text-sm font-semibold hover:gap-3 transition-all mt-4 md:mt-0"
+          >
+            View all market updates <ArrowRight size={14} />
+          </Link>
+        </div>
+
+        {/* Featured Live/Top Broadcast */}
+        <div className="border border-border bg-bg-secondary mb-6 group hover:border-accent/40 transition-colors">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Video embed area */}
-            <div className="relative aspect-video bg-bg-raised overflow-hidden group">
+            <div className="relative aspect-video bg-bg-raised overflow-hidden">
               <img
                 src={latestNews?.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=80'}
                 alt={latestNews?.title || 'Market Update'}
@@ -337,14 +356,14 @@ export default function Home() {
                 >
                   <motion.div
                     whileHover={{ scale: 1.1 }}
-                    className="w-16 h-16 rounded-full bg-accent flex items-center justify-center cursor-none shadow-lg"
+                    className="w-16 h-16 rounded-full bg-accent flex items-center justify-center cursor-pointer shadow-xl text-bg"
                   >
-                    <Play size={20} className="text-bg ml-1" />
+                    <Play size={20} className="ml-1 fill-current" />
                   </motion.div>
                 </a>
               </div>
               <div className="absolute bottom-4 left-4">
-                <span className="tag bg-red-600 text-white border-0">
+                <span className={`tag ${latestNews?.isLive ? 'bg-red-600 text-white' : 'bg-bg/90 text-accent border border-accent/40'} border-0`}>
                   {latestNews?.isLive ? 'LIVE' : (latestNews?.category || 'MARKET UPDATE')}
                 </span>
               </div>
@@ -353,7 +372,7 @@ export default function Home() {
             {/* Text */}
             <div className="p-8 md:p-12 flex flex-col justify-center">
               <p className="overline mb-4">{latestNews?.category || 'Latest Market Update'}</p>
-              <h2 className="font-display font-bold text-display-sm text-text-primary mb-4">
+              <h2 className="font-display font-bold text-display-sm text-text-primary mb-3">
                 {latestNews?.title || 'DHA Phase 9 Prism: Why Now?'}
               </h2>
               {latestNews?.subtitle && (
@@ -362,18 +381,80 @@ export default function Home() {
               <p className="text-text-secondary text-sm leading-relaxed mb-6">
                 {latestNews?.description || 'Our latest market analysis breaks down why DHA Phase 9 Prism files are outperforming all other sectors.'}
               </p>
-              <p className="text-xs text-text-muted mb-6">{latestNews?.readTime || '15 min watch'}</p>
-              <a
-                href={latestNews?.youtubeUrl || 'https://youtube.com/@pkestate'}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-accent text-sm font-medium hover:gap-3 transition-all"
-              >
-                Watch Analysis on YouTube <ArrowRight size={14} />
-              </a>
+              <div className="flex items-center justify-between pt-4 border-t border-border">
+                <p className="text-xs text-text-muted">{latestNews?.readTime || '15 min watch'}</p>
+                <a
+                  href={latestNews?.youtubeUrl || 'https://youtube.com/@pkestate'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-accent text-sm font-semibold hover:gap-3 transition-all"
+                >
+                  Watch on YouTube <ArrowRight size={14} />
+                </a>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Secondary published news items */}
+        {secondaryNews.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {secondaryNews.map((news) => (
+              <div
+                key={news.id}
+                className="bg-bg-secondary border border-border p-6 flex flex-col sm:flex-row gap-5 items-center hover:border-accent transition-colors group"
+              >
+                <div className="w-full sm:w-44 aspect-video bg-bg-raised overflow-hidden shrink-0 relative rounded-xs">
+                  <img
+                    src={news.image || 'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=400&q=80'}
+                    alt={news.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  {news.youtubeUrl && (
+                    <a
+                      href={news.youtubeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute inset-0 bg-bg/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-accent text-bg flex items-center justify-center">
+                        <Play size={12} className="ml-0.5 fill-current" />
+                      </div>
+                    </a>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <span className="text-[10px] uppercase tracking-wider text-accent font-semibold block mb-1">
+                    {news.category}
+                  </span>
+                  <h3 className="font-display font-bold text-sm text-text-primary mb-1 line-clamp-1 group-hover:text-accent transition-colors">
+                    {news.title}
+                  </h3>
+                  <p className="text-xs text-text-secondary line-clamp-2 mb-3">
+                    {news.description}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] text-text-muted">{news.readTime || '10 min watch'}</span>
+                    {news.youtubeUrl ? (
+                      <a
+                        href={news.youtubeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-red-400 hover:text-red-300 font-semibold inline-flex items-center gap-1"
+                      >
+                        Watch Video →
+                      </a>
+                    ) : (
+                      <Link to="/news" className="text-xs text-accent hover:underline">
+                        Read More →
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ─── TESTIMONIALS ──────────────────────────────────── */}

@@ -2,12 +2,11 @@ import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail, Instagram, Youtube } from 'lucide-react'
 
 const navLinks = [
+  { to: '/news', label: 'Market News & Video Updates' },
   { to: '/listings?type=Residential+Plot', label: 'Residential Plots' },
   { to: '/listings?type=Commercial+Plot', label: 'Commercial Plots' },
   { to: '/listings?type=File', label: 'Investment Files' },
-  { to: '/listings?type=Villa', label: 'Villas' },
-  { to: '/listings?type=House', label: 'Houses' },
-  { to: '/listings?type=Apartment', label: 'Apartments' },
+  { to: '/listings?type=Villa', label: 'Villas & Houses' },
 ]
 
 const societies = [

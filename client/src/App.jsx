@@ -13,6 +13,7 @@ import Listings from './pages/Listings'
 import PropertyDetail from './pages/PropertyDetail'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import News from './pages/News'
 
 // Admin
 import AdminLogin from './pages/admin/AdminLogin'
@@ -61,6 +62,7 @@ export default function App() {
           <Route path="/" element={<PageTransition><Home /></PageTransition>} />
           <Route path="/listings" element={<PageTransition><Listings /></PageTransition>} />
           <Route path="/listings/:id" element={<PageTransition><PropertyDetail /></PageTransition>} />
+          <Route path="/news" element={<PageTransition><News /></PageTransition>} />
           <Route path="/about" element={<PageTransition><About /></PageTransition>} />
           <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
           {/* Admin */}
